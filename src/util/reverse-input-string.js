@@ -5,9 +5,5 @@ export const reverseString = () => {
             let input = data.toString().trim();
             let output = input.split('').reverse().join('');
             process.stdout.write(output + '\n');
-        })
-        .on('end', () => {
-            log('Reverse done');
         });
 }
-

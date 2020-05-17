@@ -1,4 +1,4 @@
-const {pipeline} = require('stream');
+import {pipeline} from 'stream';
 import csv from 'csvtojson'
 import fs from 'fs'
 

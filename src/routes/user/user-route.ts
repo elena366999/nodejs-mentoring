@@ -1,8 +1,8 @@
 import express from 'express';
-import {SchemaValidation} from '../../validation/schema-validation';
-import {UserController} from '../../controllers/user-controller';
-import {createValidator, ExpressJoiInstance} from 'express-joi-validation';
-import {UserValidation} from "../../validation/user/user-validation";
+import { SchemaValidation } from '../../validation/schema-validation';
+import { UserController } from '../../controllers/user-controller';
+import { createValidator, ExpressJoiInstance } from 'express-joi-validation';
+import { UserValidation } from '../../validation/user/user-validation';
 
 export class UserRoute {
     userRouter: express.Router;

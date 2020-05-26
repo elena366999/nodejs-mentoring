@@ -3,7 +3,7 @@ import passwordComplexity from 'joi-password-complexity';
 import users from '../../data/users';
 
 export class UserValidation {
-    complexityOptions: object = {
+    complexityOptions: Record<string, unknown> = {
         min: 6,
         max: 26,
         lowerCase: 0,
@@ -29,6 +29,7 @@ export class UserValidation {
                 }
                 return login;
             }).message('Login already in use').required(),
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             password: passwordComplexity(this.complexityOptions),
             age: Joi.number().integer().min(4).max(130).required(),

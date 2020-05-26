@@ -4,7 +4,7 @@ import { v1 as uuidv1 } from 'uuid';
 import * as stringUtils from '../util/string-utils';
 
 export class UserService {
-    getAllUsers(showDeleted: boolean) {
+    getAllUsers(showDeleted: boolean) :Promise<User[]> {
         return new Promise((resolve, reject) => {
             if (users.length === 0) {
                 reject({
@@ -16,7 +16,7 @@ export class UserService {
         });
     }
 
-    getUserById(id: string) {
+    getUserById(id: string) :Promise<User>  {
         return new Promise((resolve, reject) => {
             this.getCurrentUser(id)
                 .then(user => resolve(user))
@@ -24,14 +24,14 @@ export class UserService {
         });
     }
 
-    createUser(user: User) {
+    createUser(user: User) :Promise<User> {
         return new Promise((resolve) => {
             this.createNewUser(user);
             resolve(user);
         });
     }
 
-    updateUser(user: User) {
+    updateUser(user: User): Promise<User> {
         return new Promise((resolve, reject) => {
             this.getCurrentUser(user.id)
                 .then(currentUser => {
@@ -43,7 +43,7 @@ export class UserService {
         });
     }
 
-    deleteUserById(id: string) {
+    deleteUserById(id: string)  :Promise<User> {
         return new Promise((resolve, reject) => {
             this.getCurrentUser(id)
                 .then((user) => {
@@ -56,7 +56,7 @@ export class UserService {
         });
     }
 
-    getAutoSuggestUsers(loginSubstring: string, limit: number) {
+    getAutoSuggestUsers(loginSubstring: string, limit: number) :Promise<User[]> {
         return new Promise((resolve, reject) => {
             this.filterUsersByLoginSubstring(users, loginSubstring)
                 .then(this.sortUsersByLogin)
@@ -99,7 +99,7 @@ export class UserService {
         });
     }
 
-    createNewUser(user: User) {
+    createNewUser(user: User): void {
         user.id = uuidv1();
         users.push(user);
     }

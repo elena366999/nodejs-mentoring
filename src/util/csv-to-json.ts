@@ -4,7 +4,7 @@ import fs from 'fs';
 
 const csvFilePath = 'src/csv/example-csv.csv';
 
-export const csvToJson = () => {
+export const csvToJson = () :void => {
     fs.createReadStream(csvFilePath)
         .pipe(csv({ checkType: true, trim: true })
             .preFileLine((fileLine, idx) => {
@@ -16,7 +16,7 @@ export const csvToJson = () => {
 };
 
 // Implements the same logic as in csvToJson(), but uses stream.pipeline() instead of pipe()
-export function csvToJsonUsingPipeline() {
+export function csvToJsonUsingPipeline(): void {
     pipeline(
         fs.createReadStream(csvFilePath),
         csv({ checkType: true, trim: true })

@@ -3,6 +3,6 @@ export function includesIgnoreCase(str: string, search_str: string): boolean {
     return result > 0;
 }
 
-export function sortIgnoreCase(str1: any, str2: any): number {
+export function sortIgnoreCase(str1: string, str2: string): number {
     return str1.localeCompare(str2, undefined, { sensitivity: 'base' });
 }

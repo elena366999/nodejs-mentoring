@@ -1,7 +1,7 @@
 import express from 'express';
 import { AppRoute } from './routes/app-route';
 import sequelizeFixtures from 'sequelize-fixtures';
-import { dbConnection, initDataFilePath } from './config/dbConfig';
+import { db, initDataFilePath } from './config/dbConfig';
 import { User } from './models/user.model';
 
 export const models = {
@@ -33,7 +33,7 @@ class App {
 
     private dbConfig(): void {
         Promise.all([
-            dbConnection.sync(),
+            db.sync(),
             sequelizeFixtures.loadFile(initDataFilePath, models)
         ])
             .catch(error => {

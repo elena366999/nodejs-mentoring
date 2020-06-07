@@ -1,4 +1,4 @@
-import { dbConnection } from '../config/dbConfig';
+import { db } from '../config/dbConfig';
 import { BuildOptions, DataTypes, Model, Sequelize } from 'sequelize';
 
 export type UserDto = {
@@ -53,5 +53,5 @@ export function UserFactory(sequelize: Sequelize): UserStatic {
     });
 }
 
-export const User = UserFactory(dbConnection);
+export const User = UserFactory(db);
 

@@ -2,7 +2,7 @@ import sequelize from 'sequelize';
 
 export const initDataFilePath = 'src/fixtures/init-data.json';
 
-export const dbConnection = new sequelize.Sequelize(
+export const db = new sequelize.Sequelize(
     (process.env.DB_NAME = 'nodejs_mentoring'),
     (process.env.DB_USER = 'postgres'),
     (process.env.DB_PASSWORD = 'DatabasePW'),

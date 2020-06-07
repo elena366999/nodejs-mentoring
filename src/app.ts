@@ -1,5 +1,12 @@
 import express from 'express';
 import { AppRoute } from './routes/app-route';
+import sequelizeFixtures from 'sequelize-fixtures';
+import { dbConnection, initDataFilePath } from './config/dbConfig';
+import { User } from './models/user.model';
+
+export const models = {
+    User
+};
 
 class App {
     app: express.Application;
@@ -7,10 +14,11 @@ class App {
 
     constructor() {
         this.app = express();
-        this.config();
+        this.commonConfig();
+        this.dbConfig();
     }
 
-    private config(): void {
+    private commonConfig(): void {
         this.app.use((req, res, next) => {
             res.header('Access-Control-Allow-Origin', '*');
             res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -21,6 +29,16 @@ class App {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: false }));
         this.app.use('/api', this.appRoute.router);
+    }
+
+    private dbConfig(): void {
+        Promise.all([
+            dbConnection.sync(),
+            sequelizeFixtures.loadFile(initDataFilePath, models)
+        ])
+            .catch(error => {
+                console.log(`Something went wrong while connecting to db: ${error.message}`);
+            });
     }
 }
 

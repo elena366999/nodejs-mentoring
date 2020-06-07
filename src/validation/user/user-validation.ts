@@ -1,6 +1,6 @@
 import Joi from '@hapi/joi';
 import passwordComplexity from 'joi-password-complexity';
-import users from '../../data/users';
+import { UserService } from '../../services/user-service';
 
 export class UserValidation {
     complexityOptions: Record<string, unknown> = {
@@ -13,22 +13,22 @@ export class UserValidation {
         requirementCount: 2
     };
     schema: Joi.ObjectSchema;
+    idParamSchema: Joi.ObjectSchema;
     filterParamsSchema: Joi.ObjectSchema;
+
+    userService: UserService = new UserService();
 
     constructor() {
         this.schema = this.createUserSchema();
         this.filterParamsSchema = this.createFilterParamsSchema();
+        this.idParamSchema = this.createIdParamSchema();
     }
 
     private createUserSchema() {
         return Joi.object().keys({
-            id: Joi.string().optional(),
-            login: Joi.string().trim().custom((login: string, helpers: Joi.CustomHelpers) => {
-                if (users.filter(u => u.login === login && u.id !== helpers.state.ancestors[0].id).length > 0) {
-                    return helpers.error('string.invalid');
-                }
-                return login;
-            }).message('Login already in use').required(),
+            id: Joi.string().uuid({ version: 'uuidv1' }).optional(),
+            // eslint-disable-next-line no-unused-vars
+            login: Joi.string().trim().required(),
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             password: passwordComplexity(this.complexityOptions),
@@ -37,10 +37,16 @@ export class UserValidation {
         });
     }
 
-    private createFilterParamsSchema() {
+    private createFilterParamsSchema(): Joi.ObjectSchema {
         return Joi.object({
             loginSubstring: Joi.string().required(),
-            limit: Joi.number().integer().positive().optional()
+            limit: Joi.number().integer().positive()
+        });
+    }
+
+    private createIdParamSchema(): Joi.ObjectSchema {
+        return Joi.object({
+            id: Joi.string().uuid({ version: 'uuidv1' }).required()
         });
     }
 }

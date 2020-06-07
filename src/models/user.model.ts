@@ -42,7 +42,7 @@ export function UserFactory(sequelize: Sequelize): UserStatic {
             allowNull: false
         },
         age: {
-            type: DataTypes.INTEGER(),
+            type: DataTypes.INTEGER,
             allowNull: false
         },
         isDeleted: {

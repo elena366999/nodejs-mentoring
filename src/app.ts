@@ -32,10 +32,8 @@ class App {
     }
 
     private dbConfig(): void {
-        Promise.all([
-            db.sync(),
-            sequelizeFixtures.loadFile(initDataFilePath, models)
-        ])
+        db.sync().then(
+            () => sequelizeFixtures.loadFile(initDataFilePath, models))
             .catch(error => {
                 console.log(`Something went wrong while connecting to db: ${error.message}`);
             });

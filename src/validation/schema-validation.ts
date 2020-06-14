@@ -7,7 +7,7 @@ export class SchemaValidation {
             req.body.id = req.params.id;
             const { error } = schema.validate(req.body, {
                 abortEarly: false,
-                allowUnknown: false
+                allowUnknown: true
             });
             if (error !== undefined && error.isJoi) {
                 res.status(400).json(this.errorResponse(error.details));

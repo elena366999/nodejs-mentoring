@@ -16,5 +16,12 @@
       "age": 5,
       "isDeleted":false
     }
+  },
+  {
+    "model": "Group",
+    "data": {
+      "name": "Test group name",
+      "permissions": ["READ"]
+    }
   }
 ]

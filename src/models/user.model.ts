@@ -1,5 +1,6 @@
 import { db } from '../config/dbConfig';
 import { BuildOptions, DataTypes, Model, Sequelize } from 'sequelize';
+import { EntityDto, Group } from './group.model';
 
 export type UserDto = {
     id: string;
@@ -7,7 +8,7 @@ export type UserDto = {
     password: string;
     age: number;
     isDeleted: boolean;
-}
+} & EntityDto
 
 export interface UserAttributes {
     id: string;
@@ -54,4 +55,11 @@ export function UserFactory(sequelize: Sequelize): UserStatic {
 }
 
 export const User = UserFactory(db);
+
+User.belongsToMany(Group, {
+    through: 'user-group'
+});
+Group.belongsToMany(User, {
+    through: 'user-group'
+});
 

@@ -1,31 +1,34 @@
-import { User, UserDto, UserModel } from '../models/user.model';
+import { User, UserDto, UserModel, UserStatic } from '../models/user.model';
 import sequelize from 'sequelize';
-import Bluebird from 'bluebird';
+import BaseRepository from './base-repository';
+import Boom from '@hapi/boom';
 
-export default class UserRepository {
-    getAll(showDeleted: boolean): Promise<UserModel[]> {
-        return User.findAll()
+export default class UserRepository extends BaseRepository<UserModel, UserStatic> {
+    constructor() {
+        super(User);
+    }
+
+    async create(dto: UserDto): Promise<UserModel> {
+        const [user, created]: [UserModel, boolean] = await User.findOrCreate({
+            where: { login: dto.login },
+            defaults: dto
+        });
+        if (!created) {
+            throw Boom.badRequest('Login already in use');
+        }
+        return user;
+    }
+
+    getAllUsers(showDeleted: boolean | null): Promise<UserModel[]> {
+        return this.model.findAll()
             .then((users: UserModel[]) => showDeleted
                 ? users
                 : users.filter(u => !u.isDeleted));
     }
 
-    getById(id: string): Promise<UserModel> {
-        return User.findByPk(id);
-    }
-
-    create(user: UserDto): Promise<UserModel> {
-        return User.create(user);
-    }
-
-    update(user: UserDto): Bluebird<UserModel | null> {
-        return User.update(user, { where: { id: user.id } })
-            .then(() => User.findByPk(user.id));
-    }
-
-    deleteById(id: string): Bluebird<UserModel | null> {
-        return User.update({ isDeleted: true }, { where: { id } })
-            .then(() => User.findByPk(id));
+    deleteById(id: string): Promise<UserModel> {
+        return this.model.update({ isDeleted: true }, { where: { id } })
+            .then(() => User.findByPk(id), () => this.handleNotFound(id));
     }
 
     findByLogin(login: string): Promise<UserModel> {
@@ -33,7 +36,8 @@ export default class UserRepository {
             where: {
                 login
             }
-        });
+        })
+            .then(this.handleNotFound(login));
     }
 
     getUsersWhereLoginContainsLimited(loginSubstring: string, limit: number): Promise<UserModel[]> {

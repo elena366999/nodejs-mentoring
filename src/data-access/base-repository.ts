@@ -1,6 +1,6 @@
 import { BuildOptions, Model } from 'sequelize';
-import { EntityDto } from '../models/group.model';
 import Boom from '@hapi/boom';
+import { EntityDto } from '../models/common/entity-dto';
 
 export default class BaseRepository<M extends Model, T extends typeof Model & {
     new(values?: any, options?: BuildOptions): M;

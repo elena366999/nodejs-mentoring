@@ -9,12 +9,9 @@ import {
     Model,
     Sequelize
 } from 'sequelize';
+import { EntityDto } from './common/entity-dto';
 
 export type Permission = 'READ' | 'WRITE' | 'DELETE' | 'SHARE' | 'UPLOAD_FILES'
-
-export type EntityDto = {
-    id: string;
-};
 
 export type GroupDto = {
     name: string;

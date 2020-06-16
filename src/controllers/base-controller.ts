@@ -2,7 +2,7 @@ import { BuildOptions, Model } from 'sequelize';
 import { BaseServiceI } from '../services/base-service-i';
 import { NextFunction, Request, Response } from 'express';
 import { UserDto } from '../models/user.model';
-import { EntityDto } from '../models/group.model';
+import { EntityDto } from '../models/common/entity-dto';
 
 export default class BaseController<M extends Model, T extends typeof Model & {
     new(values?: any, options?: BuildOptions): M;

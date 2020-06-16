@@ -27,7 +27,10 @@ export default class UserRepository extends BaseRepository<UserModel, UserStatic
     }
 
     deleteById(id: string): Promise<UserModel> {
-        return this.model.update({ isDeleted: true }, { where: { id } })
+        return this.model.update({ isDeleted: true }, {
+            where: { id },
+            individualHooks: true
+        })
             .then(() => User.findByPk(id), () => this.handleNotFound(id));
     }
 

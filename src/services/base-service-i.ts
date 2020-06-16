@@ -1,5 +1,5 @@
 import { BuildOptions, Model } from 'sequelize';
-import { EntityDto } from '../models/group.model';
+import { EntityDto } from '../models/common/entity-dto';
 
 export interface BaseServiceI<M extends Model, T extends typeof Model & {
     new(values?: any, options?: BuildOptions): M;

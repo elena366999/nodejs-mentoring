@@ -9,7 +9,7 @@ export class GroupService extends BaseService<GroupModel, GroupStatic, GroupRepo
     }
 
     public addUsersToGroup(groupId: string, userIds: string[]): Promise<GroupModel> {
-        return this.repository.addToGroup(groupId, userIds);
+        return this.repository.addUsersToGroup(groupId, userIds);
     }
 
     public getUsers(id: string): Promise<UserModel[]> {

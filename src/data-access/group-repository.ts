@@ -21,7 +21,7 @@ export default class GroupRepository extends BaseRepository<GroupModel, GroupSta
         return group;
     }
 
-    addToGroup(groupId: string, userIds: string[]): Promise<GroupModel> {
+    addUsersToGroup(groupId: string, userIds: string[]): Promise<GroupModel> {
         return db.transaction(async (transaction: Transaction) => {
             const users: UserModel[] = await Promise.all(
                 userIds.map(async (userId: string) => {
@@ -35,7 +35,7 @@ export default class GroupRepository extends BaseRepository<GroupModel, GroupSta
             Group.findByPk(groupId, { transaction })
                 .then(this.handleNotFound(groupId))
                 .then(g => g.addUsers(users, { transaction }));
-            return await this.getById(groupId);
+            return Group.findByPk(groupId, { transaction, include: [User] });
         });
     }
 

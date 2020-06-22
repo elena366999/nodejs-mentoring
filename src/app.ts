@@ -1,11 +1,14 @@
 import express from 'express';
-import { AppRoute } from './routes/app-route';
+import { AppRoute } from './routes/common/app-route';
 import sequelizeFixtures from 'sequelize-fixtures';
 import { db, initDataFilePath } from './config/dbConfig';
 import { User } from './models/user.model';
+import { Group } from './models/group.model';
+import { handleHttpError } from './middlewares/http-error-handler';
 
 export const models = {
-    User
+    User,
+    Group
 };
 
 class App {
@@ -28,7 +31,9 @@ class App {
 
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: false }));
+
         this.app.use('/api', this.appRoute.router);
+        this.app.use(handleHttpError);
     }
 
     private dbConfig(): void {

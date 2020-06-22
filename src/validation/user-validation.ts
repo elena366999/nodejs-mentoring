@@ -1,6 +1,5 @@
 import Joi from '@hapi/joi';
 import passwordComplexity from 'joi-password-complexity';
-import { UserService } from '../../services/user-service';
 
 export class UserValidation {
     complexityOptions: Record<string, unknown> = {
@@ -15,8 +14,6 @@ export class UserValidation {
     schema: Joi.ObjectSchema;
     idParamSchema: Joi.ObjectSchema;
     filterParamsSchema: Joi.ObjectSchema;
-
-    userService: UserService = new UserService();
 
     constructor() {
         this.schema = this.createUserSchema();

@@ -1,5 +1,7 @@
-export const reverseString = () :void => {
-    console.log('Please type a string to reverse');
+import { logger } from './logger';
+
+export const reverseString = (): void => {
+    logger.info('Please type a string to reverse');
     process.stdin
         .on('data', (data) => {
             const input = data.toString().trim();

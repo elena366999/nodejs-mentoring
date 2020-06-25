@@ -1,18 +1,19 @@
 import { pipeline } from 'stream';
 import csv from 'csvtojson';
 import fs from 'fs';
+import { logger } from './logger';
 
 const csvFilePath = 'src/csv/example-csv.csv';
 
-export const csvToJson = () :void => {
+export const csvToJson = (): void => {
     fs.createReadStream(csvFilePath)
         .pipe(csv({ checkType: true, trim: true })
             .preFileLine((fileLine, idx) => {
                 return idx === 0 ? fileLine.toLowerCase() : fileLine;
             }))
-        .on('error', () => console.log('An error occurred while converting csv to json'))
+        .on('error', () => logger.error('An error occurred while converting csv to json'))
         .pipe(fs.createWriteStream('result-json.txt'))
-        .on('error', () => console.log('An error occurred while writing json to file'));
+        .on('error', () => logger.error('An error occurred while writing json to file'));
 };
 
 // Implements the same logic as in csvToJson(), but uses stream.pipeline() instead of pipe()
@@ -26,9 +27,9 @@ export function csvToJsonUsingPipeline(): void {
         fs.createWriteStream('result-json.txt'),
         (err) => {
             if (err) {
-                console.error('Csv to json pipeline failed.', err);
+                logger.error('Csv to json pipeline failed.', err);
             } else {
-                console.log('Csv to json pipeline succeeded.');
+                logger.info('Csv to json pipeline succeeded.');
             }
         }
     );

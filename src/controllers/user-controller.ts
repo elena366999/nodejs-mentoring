@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { UserService } from '../services/user-service';
 import { UserDto, UserModel, UserStatic } from '../models/user.model';
 import BaseController from './base-controller';
+import { get, toNumber } from 'lodash';
 
 export class UserController extends BaseController<UserModel, UserStatic, UserService> {
     constructor() {
@@ -10,8 +11,8 @@ export class UserController extends BaseController<UserModel, UserStatic, UserSe
 
     public getAll = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
-            const showDeleted: boolean = !req.query.showDeleted ? false
-                : String(req.query.showDeleted).trim().toLowerCase() === 'true';
+            const showDeleted: boolean = !get(req, 'query.showDeleted') ? false
+                : get(req, 'query.showDeleted').trim().toLowerCase() === 'true';
 
             const users: UserModel[] = await this.service.getAllUsers(showDeleted);
             res.json(users);
@@ -22,8 +23,8 @@ export class UserController extends BaseController<UserModel, UserStatic, UserSe
     };
 
     public getAutoSuggestUsers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        const loginSubstring = String(req.query.loginSubstring);
-        const limit = Number(req.query.limit);
+        const loginSubstring :string = get(req, 'query.loginSubstring');
+        const limit :number = toNumber(get(req, 'query.limit'));
 
         this.service.getAutoSuggestUsers(loginSubstring, limit)
             .then(users => res.json(users))
@@ -32,7 +33,7 @@ export class UserController extends BaseController<UserModel, UserStatic, UserSe
 
     public createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
-            const newUserDto: UserDto = req.body;
+            const newUserDto: UserDto = get(req, 'body');
             const user: UserModel = await this.service.createUser(newUserDto);
             res.status(201).json(user);
         } catch (err) {
@@ -43,7 +44,7 @@ export class UserController extends BaseController<UserModel, UserStatic, UserSe
 
     public updateUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
-            const updatedUserDto: UserDto = req.body;
+            const updatedUserDto: UserDto = get(req, 'body');
 
             const user = await this.service.updateUser(updatedUserDto);
             res.json(user);
@@ -55,7 +56,7 @@ export class UserController extends BaseController<UserModel, UserStatic, UserSe
 
     public deleteUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
-            const userId: string = req.params.id;
+            const userId: string = get(req, 'params.id');
 
             const user: UserModel = await this.service.deleteUserById(userId);
             res.json(user);

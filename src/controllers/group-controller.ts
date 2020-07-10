@@ -3,6 +3,7 @@ import { GroupModel, GroupStatic } from '../models/group.model';
 import { GroupService } from '../services/group-service';
 import { NextFunction, Request, Response } from 'express';
 import { UserModel } from '../models/user.model';
+import { get } from 'lodash';
 
 export class GroupController extends BaseController<GroupModel, GroupStatic, GroupService> {
     constructor() {
@@ -11,8 +12,8 @@ export class GroupController extends BaseController<GroupModel, GroupStatic, Gro
 
     public addUsersToGroup = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
-            const userIds: string[] = req.body.userIds;
-            const id: string = req.params.id;
+            const userIds: string[] = get(req, 'body.userIds');
+            const id: string = get(req, 'params.id');
 
             const group: GroupModel = await this.service.addUsersToGroup(id, userIds);
             res.json(group);
@@ -24,7 +25,7 @@ export class GroupController extends BaseController<GroupModel, GroupStatic, Gro
 
     public getUsers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
-            const id: string = req.params.id;
+            const id: string = get(req, 'params.id');
 
             const users: UserModel[] = await this.service.getUsers(id);
             res.json(users);

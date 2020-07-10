@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { logger } from '../util/logger';
+import { logger } from '../../util/logger';
 const profiling: EventEmitter = new EventEmitter();
 
 profiling.on('route', ({ elapsedMS }) => {

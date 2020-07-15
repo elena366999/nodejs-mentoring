@@ -328,7 +328,8 @@
             2,
             7
         ],
-        "no-bitwise": 2
+        "no-bitwise": 2,
+        "no-implicit-any": 0
     },
     "globals": {
         "$": true,

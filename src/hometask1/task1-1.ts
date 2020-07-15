@@ -1,3 +1,3 @@
-import { reverseString } from '../util/reverse-input-string';
+import { reverseString } from '../util/string-utils';
 
 reverseString();

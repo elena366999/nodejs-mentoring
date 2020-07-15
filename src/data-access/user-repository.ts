@@ -40,7 +40,7 @@ export default class UserRepository extends BaseRepository<UserModel, UserStatic
                 login
             }
         })
-            .then(this.handleNotFound(login));
+            .then(this.handleNotFound(`Entity with login ${login} not found`));
     }
 
     getUsersWhereLoginContainsLimited(loginSubstring: string, limit: number): Promise<UserModel[]> {
@@ -54,5 +54,13 @@ export default class UserRepository extends BaseRepository<UserModel, UserStatic
                     'LIKE', `%${loginSubstring.toLowerCase()}%`)
             }
         });
+    }
+
+    findByLoginAndPassword(login: string, password: string): Promise<UserModel> {
+        return User.findOne({
+            where:
+                { login, password }
+        })
+            .then(this.handleNotFound('Bad login/password combination'));
     }
 }

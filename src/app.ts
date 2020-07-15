@@ -8,7 +8,10 @@ import { handleHttpError } from './middlewares/http-error-handler';
 import { logger } from './util/logger';
 import Boom from '@hapi/boom';
 import { logRequestData } from './middlewares/request-data-logger';
-import { profilingWrapper } from './middlewares/profiling-wrapper';
+import { profilingWrapper } from './middlewares/wrapper/profiling-wrapper';
+import { verifyToken } from './middlewares/verify-token';
+import { unless } from './middlewares/wrapper/unless';
+import cors from 'cors';
 
 export const models = {
     User,
@@ -26,15 +29,12 @@ class App {
     }
 
     private commonConfig(): void {
-        this.app.use((req, res, next) => {
-            res.header('Access-Control-Allow-Origin', '*');
-            res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-            res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-            next();
-        });
-
+        this.app.use(cors());
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: false }));
+
+        this.app.use(unless(req => req.originalUrl === '/api/auth/login', verifyToken));
+
         this.app.all('*', profilingWrapper(logRequestData));
 
         this.app.use('/api', this.appRoute.router);

@@ -3,7 +3,7 @@ import { GroupModel, GroupStatic } from '../models/group.model';
 import BaseService from './base-service';
 import { UserModel } from '../models/user.model';
 
-export class GroupService extends BaseService<GroupModel, GroupStatic, GroupRepository> {
+export default class GroupService extends BaseService<GroupModel, GroupStatic, GroupRepository> {
     constructor() {
         super(new GroupRepository());
     }

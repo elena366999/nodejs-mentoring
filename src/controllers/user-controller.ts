@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
-import { UserService } from '../services/user-service';
-import { UserDto, UserModel, UserStatic } from '../models/user.model';
+import UserService from '../services/user-service';
+import { UserModel, UserStatic } from '../models/user.model';
 import BaseController from './base-controller';
 import { get, toNumber } from 'lodash';
 
-export class UserController extends BaseController<UserModel, UserStatic, UserService> {
+export default class UserController extends BaseController<UserModel, UserStatic, UserService> {
     constructor() {
         super(new UserService());
     }
@@ -23,47 +23,16 @@ export class UserController extends BaseController<UserModel, UserStatic, UserSe
     };
 
     public getAutoSuggestUsers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        const loginSubstring :string = get(req, 'query.loginSubstring');
-        const limit :number = toNumber(get(req, 'query.limit'));
+        try {
+            const loginSubstring :string = get(req, 'query.loginSubstring');
+            const limit :number = toNumber(get(req, 'query.limit'));
 
-        this.service.getAutoSuggestUsers(loginSubstring, limit)
-            .then(users => res.json(users))
-            .catch(err => next(err));
+            const users: UserModel[] = await this.service.getAutoSuggestUsers(loginSubstring, limit);
+            res.json(users);
+        } catch (err) {
+            // eslint-disable-next-line callback-return
+            next(err);
+        }
     };
-
-    public createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        try {
-            const newUserDto: UserDto = get(req, 'body');
-            const user: UserModel = await this.service.createUser(newUserDto);
-            res.status(201).json(user);
-        } catch (err) {
-            // eslint-disable-next-line callback-return
-            next(err);
-        }
-    }
-
-    public updateUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        try {
-            const updatedUserDto: UserDto = get(req, 'body');
-
-            const user = await this.service.updateUser(updatedUserDto);
-            res.json(user);
-        } catch (err) {
-            // eslint-disable-next-line callback-return
-            next(err);
-        }
-    }
-
-    public deleteUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        try {
-            const userId: string = get(req, 'params.id');
-
-            const user: UserModel = await this.service.deleteUserById(userId);
-            res.json(user);
-        } catch (err) {
-            // eslint-disable-next-line callback-return
-            next(err);
-        }
-    }
 }
 

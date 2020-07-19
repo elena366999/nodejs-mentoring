@@ -1,5 +1,5 @@
 import { BuildOptions, Model } from 'sequelize';
-import { BaseServiceI } from '../services/base-service-i';
+import  BaseServiceI  from '../services/base-service-i';
 import { NextFunction, Request, Response } from 'express';
 import { UserDto } from '../models/user.model';
 import { EntityDto } from '../models/common/entity-dto';

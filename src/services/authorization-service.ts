@@ -1,7 +1,7 @@
 import { UserModel } from '../models/user.model';
 import UserRepository from '../data-access/user-repository';
 
-export class AuthorizationService {
+export default class AuthorizationService {
     private userRepository: UserRepository;
 
     constructor() {

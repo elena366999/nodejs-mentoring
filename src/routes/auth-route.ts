@@ -1,5 +1,5 @@
 import express from 'express';
-import { AuthorizationController } from '../controllers/authorization-controller';
+import  AuthorizationController  from '../controllers/authorization-controller';
 import { LoginValidation } from '../validation/login-validation';
 import { SchemaValidation } from '../validation/common/schema-validation';
 

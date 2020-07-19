@@ -1,5 +1,5 @@
 import express from 'express';
-import { GroupController } from '../controllers/group-controller';
+import  GroupController from '../controllers/group-controller';
 import { GroupValidation } from '../validation/group-validation';
 import { createValidator, ExpressJoiInstance } from 'express-joi-validation';
 import { SchemaValidation } from '../validation/common/schema-validation';

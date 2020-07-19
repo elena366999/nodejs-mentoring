@@ -1,6 +1,6 @@
 import express from 'express';
 import { SchemaValidation } from '../validation/common/schema-validation';
-import { UserController } from '../controllers/user-controller';
+import  UserController  from '../controllers/user-controller';
 import { createValidator, ExpressJoiInstance } from 'express-joi-validation';
 import { UserValidation } from '../validation/user-validation';
 
@@ -25,10 +25,10 @@ export class UserRoute {
         this.userRouter.get('/:id', this.paramValidation.params(this.userValidation.idParamSchema),
             this.userController.getById);
         this.userRouter.post('/', SchemaValidation.validateSchema(this.userValidation.schema),
-            this.userController.createUser);
+            this.userController.create);
         this.userRouter.put('/:id', SchemaValidation.validateSchema(this.userValidation.schema),
-            this.userController.updateUser);
+            this.userController.update);
         this.userRouter.delete('/:id',  this.paramValidation.params(this.userValidation.idParamSchema),
-            this.userController.deleteUser);
+            this.userController.delete);
     }
 }

@@ -1,11 +1,11 @@
 import BaseController from './base-controller';
 import { GroupModel, GroupStatic } from '../models/group.model';
-import { GroupService } from '../services/group-service';
+import  GroupService  from '../services/group-service';
 import { NextFunction, Request, Response } from 'express';
 import { UserModel } from '../models/user.model';
 import { get } from 'lodash';
 
-export class GroupController extends BaseController<GroupModel, GroupStatic, GroupService> {
+export default class GroupController extends BaseController<GroupModel, GroupStatic, GroupService> {
     constructor() {
         super(new GroupService());
     }

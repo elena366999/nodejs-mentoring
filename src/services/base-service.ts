@@ -1,6 +1,6 @@
 import BaseRepository from '../data-access/base-repository';
 import { BuildOptions, Model } from 'sequelize';
-import { BaseServiceI } from './base-service-i';
+import BaseServiceI from './base-service-i';
 import { EntityDto } from '../models/common/entity-dto';
 
 export default class BaseService<M extends Model, T extends typeof Model & {

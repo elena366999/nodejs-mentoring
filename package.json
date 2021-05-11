@@ -51,7 +51,7 @@
     "express-joi-validation": "^4.0.3",
     "joi-password-complexity": "^4.1.0",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "pg": "^8.2.1",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.21.11",
